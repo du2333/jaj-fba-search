@@ -2,12 +2,22 @@
 
 import { FormEvent, useState } from "react";
 
-export default function SearchBar({ placeholder }: { placeholder: string }) {
+export default function SearchBar({
+  placeholder,
+  onSearch,
+}: {
+  placeholder: string;
+  onSearch: (searchTerm: string) => Promise<void>;
+}) {
   const [searchValue, setSearchValue] = useState("");
-  const handleSearch = (event: FormEvent) => {
+  const handleSearch = async (event: FormEvent) => {
     event.preventDefault();
-    console.log(searchValue);
-    setSearchValue("");
+
+    // 调用传入的onSearch函数，处理搜索逻辑
+    if (searchValue.trim() !== "") {
+      await onSearch(searchValue);
+      setSearchValue("");
+    }
   };
 
   return (
