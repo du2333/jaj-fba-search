@@ -23,7 +23,7 @@ const getToken = async (code: string) => {
   return tokens;
 };
 
-function getDrive(access_token: string | undefined, refresh_token: string | undefined) {
+function getDrive(access_token: string | null, refresh_token: string | null) {
 
   if (!access_token || !refresh_token) {
     throw new Error("Access token or refresh token not found");
