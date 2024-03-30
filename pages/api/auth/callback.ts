@@ -1,4 +1,4 @@
-import { getToken } from "@/app/lib/googleAuth";
+import { exchangeToken } from "@/app/lib/googleAuth";
 import { NextApiRequest, NextApiResponse } from "next";
 import {setTokens} from "@/app/lib/kv";
 
@@ -6,7 +6,7 @@ export default async function callback(req: NextApiRequest, res: NextApiResponse
   const code = req.query.code as string;
   try {
     // 获取 tokens 并存到数据库
-    const { access_token, refresh_token } = await getToken(code);
+    const { access_token, refresh_token } = await exchangeToken(code);
     
     if (!access_token || !refresh_token) {
       throw new Error("Access token or refresh token not found");

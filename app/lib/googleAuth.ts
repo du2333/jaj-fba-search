@@ -1,4 +1,5 @@
 import { google } from "googleapis";
+import { getTokens } from "@/app/lib/kv";
 
 // 初始化OAuth2客户端
 const oauth2Client = new google.auth.OAuth2(
@@ -18,12 +19,13 @@ const url = oauth2Client.generateAuthUrl({
 });
 
 // 稍后用于交换授权码的方法
-const getToken = async (code: string) => {
+const exchangeToken = async (code: string) => {
   const { tokens } = await oauth2Client.getToken(code);
   return tokens;
 };
 
-function getDrive(access_token: string | null, refresh_token: string | null) {
+async function getDrive() {
+  const { access_token, refresh_token } = await getTokens();
 
   if (!access_token || !refresh_token) {
     throw new Error("Access token or refresh token not found");
@@ -39,4 +41,4 @@ function getDrive(access_token: string | null, refresh_token: string | null) {
   return drive;
 }
 
-export { getDrive, url, getToken };
+export { getDrive, url, exchangeToken };

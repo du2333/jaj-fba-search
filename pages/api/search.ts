@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import { getDrive } from "@/app/lib/googleAuth";
-import { getTokens } from "@/app/lib/kv";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,10 +11,7 @@ export default async function handler(
     const { query } = req.body;
 
     try {
-      // 获取 tokens
-      const { access_token, refresh_token } = await getTokens();
-
-      const drive = getDrive(access_token, refresh_token);
+      const drive = await getDrive();
       // 调用谷歌驱动搜索文件
       const result = await drive.files.list({
         q: `name contains '${query}'`,
