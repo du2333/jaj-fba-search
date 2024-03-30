@@ -1,13 +1,16 @@
 import { exchangeToken } from "@/app/lib/googleAuth";
 import { NextApiRequest, NextApiResponse } from "next";
-import {setTokens} from "@/app/lib/kv";
+import { setTokens } from "@/app/lib/db";
 
-export default async function callback(req: NextApiRequest, res: NextApiResponse) {
+export default async function callback(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const code = req.query.code as string;
   try {
-    // 获取 tokens 并存到数据库
+    //  交换授权码获取访问令牌 和 刷新令牌 存到数据库
     const { access_token, refresh_token } = await exchangeToken(code);
-    
+
     if (!access_token || !refresh_token) {
       throw new Error("Access token or refresh token not found");
     }
