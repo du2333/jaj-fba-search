@@ -5,7 +5,7 @@ import { getTokens } from "@/app/lib/db";
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID, // 客户端ID
   process.env.GOOGLE_CLIENT_SECRET, // 客户端密钥
-  "http://localhost:3000/api/auth/callback" // 重定向URI
+  process.env.REDIRECT_URI // 重定向URI
 );
 
 // 生成一个授权URL
@@ -15,7 +15,8 @@ const url = oauth2Client.generateAuthUrl({
   scope: [
     "https://www.googleapis.com/auth/drive.metadata.readonly",
     "https://www.googleapis.com/auth/drive.readonly",
-  ], // 需要查询Google Drive的scope
+    "https://www.googleapis.com/auth/drive",
+  ],
 });
 
 // 稍后用于交换授权码的方法
@@ -24,7 +25,7 @@ const exchangeToken = async (code: string) => {
   return tokens;
 };
 
-async function getDrive() {
+async function getOAuth2ClientWithTokens() {
   const { access_token, refresh_token } = await getTokens();
 
   if (!access_token || !refresh_token) {
@@ -36,9 +37,21 @@ async function getDrive() {
     refresh_token: refresh_token,
   });
 
-  const drive = google.drive({ version: "v3", auth: oauth2Client });
-
-  return drive;
+  return oauth2Client;
 }
 
-export { getDrive, url, exchangeToken };
+async function getDrive() {
+  return google.drive({
+    version: "v3",
+    auth: await getOAuth2ClientWithTokens(),
+  });
+}
+
+async function getSheet() {
+  return google.sheets({
+    version: "v4",
+    auth: await getOAuth2ClientWithTokens(),
+  });
+}
+
+export { getDrive, getSheet, url, exchangeToken };

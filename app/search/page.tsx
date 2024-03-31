@@ -1,28 +1,59 @@
-'use client'
+"use client";
 
-import SearchBar from "@/app/ui/searchBar";
+import SearchBar from "@/app/components/search/searchBar";
+import Display from "@/app/components/search/display";
+import { useState } from "react";
 
 export default function SearchPage() {
-  // 处理搜索逻辑
+  const [searchResult, setSearchResult] = useState("");
+
   const handleSearch = async (searchTerm: string) => {
     // 发送搜索请求到/api/search
-    const response = await fetch("/api/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ query: searchTerm }),
-    });
+    const response = await fetch(
+      `/api/search?query=${encodeURIComponent(searchTerm)}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (!response.ok) {
       // 错误处理
-      console.error("Search failed", response);
+      console.error("Search failed", await response.json());
     } else {
-      const data = await response.json();
-      // 处理搜索结果，如显示搜索结果
-      console.log(data);
+      const fileId = await response.json();
+
+      console.log("fileId", fileId);
+
+      if (fileId.message) {
+        setSearchResult(fileId.message);
+        return;
+      }
+      // 发送请求到/api/cell_text
+      const cellResponse = await fetch(`/api/cell_text?fileId=${fileId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!cellResponse.ok) {
+        // 错误处理
+        console.error("Cell text failed", await cellResponse.json());
+      } else {
+        const cellData = await cellResponse.json();
+        // 处理单元格文本
+        setSearchResult(cellData[0]);
+      }
     }
   };
 
-  return <SearchBar placeholder="Seach here..." onSearch={handleSearch}/>;
+  return (
+    <div>
+      <SearchBar placeholder="Seach here..." onSearch={handleSearch} />
+      <Display text={searchResult} />
+    </div>
+  );
 }
