@@ -22,10 +22,9 @@ export default function SearchPage() {
     if (!response.ok) {
       // 错误处理
       console.error("Search failed", await response.json());
+      setSearchResult("An error occurred");
     } else {
       const fileId = await response.json();
-
-      console.log("fileId", fileId);
 
       if (fileId.message) {
         setSearchResult(fileId.message);
