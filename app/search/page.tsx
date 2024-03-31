@@ -43,8 +43,9 @@ export default function SearchPage() {
         console.error("Cell text failed", await cellResponse.json());
       } else {
         const cellData = await cellResponse.json();
+        console.log(cellData);
         // 处理单元格文本
-        setSearchResult(cellData[0]);
+        setSearchResult(JSON.stringify(cellData[0][0]));
       }
     }
   };
