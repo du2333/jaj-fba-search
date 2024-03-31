@@ -18,7 +18,7 @@ export default async function handler(
       });
 
       if (!result.data.files || result.data.files.length === 0) {
-        res.status(200).json({ message: "No files found" });
+        res.status(200).json({ message: "亲，还没有您的POD呢~ 请稍等查询" });
         return;
       }
 
@@ -36,7 +36,7 @@ export default async function handler(
       res.setHeader("Content-Type", "application/pdf");
       res.setHeader(
         "Content-Disposition",
-        `attachment; filename="${filename}"`
+        `attachment; filename="${encodeURIComponent(filename || 'file')}"` 
       );
 
       res.status(200).send(file.data);

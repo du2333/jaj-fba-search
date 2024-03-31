@@ -1,6 +1,6 @@
 export default function Page({ text }: { text: string }) {
-  // 提取11位数字
-  const match = text.match(/\d{11}/);
+  // 提取6到15位数字
+  const match = text.match(/\d{6,15}/);
   const id = match ? match[0] : null;
 
   // 使用id来分割字符串
