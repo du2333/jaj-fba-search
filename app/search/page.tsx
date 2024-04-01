@@ -3,11 +3,16 @@
 import SearchBar from "@/app/components/search/searchBar";
 import Display from "@/app/components/search/display";
 import { useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function SearchPage() {
   const [searchResult, setSearchResult] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFound, setIsFound] = useState(true);
 
   const handleSearch = async (searchTerm: string) => {
+    setIsFound(true);
+    setIsLoading(true);
     // 发送搜索请求到/api/search
     const response = await fetch(
       `/api/search?query=${encodeURIComponent(searchTerm)}`,
@@ -27,7 +32,8 @@ export default function SearchPage() {
       const fileId = await response.json();
 
       if (fileId.message) {
-        setSearchResult(fileId.message);
+        setIsFound(false);
+        setIsLoading(false);
         return;
       }
       // 发送请求到/api/cell_text
@@ -48,12 +54,27 @@ export default function SearchPage() {
         setSearchResult(JSON.stringify(cellData[0][0]));
       }
     }
+    setIsLoading(false);
   };
 
   return (
     <div>
-      <SearchBar placeholder="Seach here..." onSearch={handleSearch} />
-      <Display text={searchResult} />
+      <SearchBar
+        placeholder="Enter the PO/FBA number..."
+        onSearch={handleSearch}
+        isLoading={isLoading}
+      />
+      <div className="mx-auto mt-4 max-w-md p-4 border border-gray-300 shadow-lg rounded-lg bg-white">
+        {isLoading ? (
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-[328px]" />
+            <Skeleton className="h-4 w-[328px]" />
+            <Skeleton className="h-4 w-[290px]" />
+          </div>
+        ) : (
+          <Display text={searchResult} isFound={isFound} />
+        )}
+      </div>
     </div>
   );
 }
