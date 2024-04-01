@@ -4,6 +4,7 @@ import SearchBar from "@/app/components/search/searchBar";
 import Display from "@/app/components/search/display";
 import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Card } from "@/components/ui/card";
 
 export default function SearchPage() {
   const [searchResult, setSearchResult] = useState("");
@@ -64,17 +65,16 @@ export default function SearchPage() {
         onSearch={handleSearch}
         isLoading={isLoading}
       />
-      <div className="mx-auto mt-4 max-w-md p-4 border border-gray-300 shadow-lg rounded-lg bg-white">
+      <Card className="mx-auto mt-4 max-w-md p-4">
         {isLoading ? (
           <div className="space-y-2">
-            <Skeleton className="h-4 w-[328px]" />
             <Skeleton className="h-4 w-[328px]" />
             <Skeleton className="h-4 w-[290px]" />
           </div>
         ) : (
           <Display text={searchResult} isFound={isFound} />
         )}
-      </div>
+      </Card>
     </div>
   );
 }
