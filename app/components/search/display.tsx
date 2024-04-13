@@ -21,20 +21,21 @@ export default function Page({
     };
 
     components = (
-      <div className="relative m-6">
+      <div className="flex flex-col m-4">
         {text}
         <br />
-        {text && <Button
-          variant="link"
-          onClick={handleClick}
-          className="absolute right-2"
-        >
-          Download POD
-        </Button>}
+        {text && (
+          <Button
+            variant="link"
+            onClick={handleClick}
+          >
+            Download POD
+          </Button>
+        )}
       </div>
     );
   } else {
-    components = <div>亲~ 未查询到BOL，请稍后查询</div>;
+    components = <div className="m-3">亲~ 未查询到BOL，请稍后查询</div>;
   }
 
   return <div className="m-4 font-medium">{components}</div>;

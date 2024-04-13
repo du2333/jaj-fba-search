@@ -27,7 +27,7 @@ export default function SearchBar({
 
   return (
     <form className="max-w-md mx-auto mt-8" onSubmit={handleSearch}>
-      <div className="flex justify-between">
+      <div className="flex justify-between w-[400px]">
         <Input
           type="search"
           id="default-search"

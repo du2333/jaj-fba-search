@@ -10,8 +10,10 @@ export default function SearchPage() {
   const [searchResult, setSearchResult] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isFound, setIsFound] = useState(true);
+  const [first, setFirst] = useState(false)
 
   const handleSearch = async (searchTerm: string) => {
+    setFirst(true);
     setIsFound(true);
     setIsLoading(true);
     // 发送搜索请求到/api/search
@@ -59,22 +61,22 @@ export default function SearchPage() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col h-screen w-full items-center justify-center">
       <SearchBar
         placeholder="Enter the PO/FBA number..."
         onSearch={handleSearch}
         isLoading={isLoading}
       />
-      <Card className="mx-auto mt-4 max-w-md p-4">
+      {first && <Card className="mt-4 w-[400px]">
         {isLoading ? (
-          <div className="space-y-2">
+          <div className="space-y-2 m-4">
             <Skeleton className="h-4 w-[328px]" />
             <Skeleton className="h-4 w-[290px]" />
           </div>
         ) : (
-          <Display text={searchResult} isFound={isFound} />
+          <Display text={searchResult} isFound={isFound}/>
         )}
-      </Card>
+      </Card>}
     </div>
   );
 }
