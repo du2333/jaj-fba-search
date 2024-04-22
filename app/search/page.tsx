@@ -62,7 +62,7 @@ export default function SearchPage() {
 
   return (
     <div className="flex flex-col h-screen w-full items-center justify-center">
-      <div className="w-full md:max-w-lg">
+      <div className="w-full md:max-w-[650px]">
         <SearchBar
           placeholder="Enter the PO/FBA number..."
           onSearch={handleSearch}

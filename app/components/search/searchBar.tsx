@@ -35,9 +35,9 @@ export default function SearchBar({
           required
           onChange={(e) => setSearchValue(e.target.value)}
           value={searchValue}
-          className="h-12"
+          className="h-14"
         />
-        <Button type="submit" className="ml-1 bg-[#ff5f13] rounded-md h-12" disabled={isLoading}>
+        <Button type="submit" className="ml-1 bg-[#ff5f13] rounded-md h-14" disabled={isLoading}>
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {isLoading ? "Please wait" : "Search"}
         </Button>
