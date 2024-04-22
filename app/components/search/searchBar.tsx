@@ -26,8 +26,8 @@ export default function SearchBar({
   };
 
   return (
-    <form className="max-w-md mx-auto mt-8" onSubmit={handleSearch}>
-      <div className="flex justify-between w-[400px]">
+    <form className="w-full" onSubmit={handleSearch}>
+      <div className="flex flex-col gap-y-2 md:flex-row justify-between">
         <Input
           type="search"
           id="default-search"
@@ -35,8 +35,9 @@ export default function SearchBar({
           required
           onChange={(e) => setSearchValue(e.target.value)}
           value={searchValue}
+          className="h-12"
         />
-        <Button type="submit" className="ml-2 px-4 py-2" disabled={isLoading}>
+        <Button type="submit" className="ml-1 bg-[#ff5f13] rounded-md h-12" disabled={isLoading}>
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {isLoading ? "Please wait" : "Search"}
         </Button>

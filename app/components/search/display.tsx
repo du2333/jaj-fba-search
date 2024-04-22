@@ -35,7 +35,7 @@ export default function Page({
       </div>
     );
   } else {
-    components = <div className="m-3">亲~ 未查询到BOL，请稍后查询</div>;
+    components = <div className="m-3 text-center">亲~ 未查询到BOL，请稍后查询</div>;
   }
 
   return <div className="m-4 font-medium">{components}</div>;
