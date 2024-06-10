@@ -11,7 +11,7 @@ const oauth2Client = new google.auth.OAuth2(
 // 生成一个授权URL
 const url = oauth2Client.generateAuthUrl({
   access_type: "offline", // 'offline'获取refresh token
-  // prompt: "consent",
+  prompt: "consent",// 每次登录获取新的refresh token
   scope: [
     "https://www.googleapis.com/auth/drive.metadata.readonly",
     "https://www.googleapis.com/auth/drive.readonly",
