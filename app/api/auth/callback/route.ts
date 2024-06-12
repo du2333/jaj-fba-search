@@ -23,8 +23,11 @@ export async function GET(req: NextRequest) {
 
     setTokens(access_token, refresh_token);
 
-    // 授权成功的处理，如重定向到一个表名成功的页面
-    return NextResponse.redirect("/auth/success");
+    // Construct the absolute URL for the redirection
+    const redirectUrl = new URL("/auth/success", req.nextUrl.origin);
+
+    // 授权成功的处理，如重定向成功页面
+    return NextResponse.redirect(redirectUrl.toString());
   } catch (error) {
     if (error instanceof Error) {
       // 错误处理
