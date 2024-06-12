@@ -3,13 +3,13 @@ import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams;
-    const fieldId = searchParams.get("fieldId");
+    const fileId = searchParams.get("fileId");
 
     try {
         const sheet = await getSheet();
         const result = await sheet.spreadsheets.values.get({
-            spreadsheetId: fieldId as string,
-            range: "F10",
+          spreadsheetId: fileId as string,
+          range: "F10",
         });
 
         return Response.json(result.data.values);
