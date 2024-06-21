@@ -8,11 +8,18 @@ export async function GET(req: NextRequest) {
 
   try {
     const drive = await getDrive();
+
+    const queryString = `name contains '-' and fullText contains '${query}' and (mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' or mimeType = 'application/vnd.google-apps.spreadsheet') and trashed = false and starred = false`
+    
     const result = await drive.files.list({
-      q: `name contains '-' and fullText contains '${query}' and (mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' or mimeType = 'application/vnd.google-apps.spreadsheet') and trashed = false`,
+      q: queryString,
       fields: "files(id, name, mimeType)",
       spaces: "drive",
     });
+    
+    // Log the query and response for debugging
+    console.log(`Google Drive API Query: ${queryString}`);
+    console.log(`Google Drive API Response:`, result.data);
 
     if (!result.data.files || result.data.files.length === 0) {
       return NextResponse.json({ message: "No files found" });
